@@ -1,0 +1,71 @@
+plugins {
+	id 'application'
+	id "io.freefair.lombok" version "4.1.6"
+	id 'org.springframework.boot' version '2.4.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.palantir.docker' version '0.25.0'
+	id 'com.palantir.docker-run' version '0.25.0'
+	id 'java'
+}
+
+group = 'com.example'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+mainClassName = 'DynamoDemoApplication'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+//	aws-java-dynamodb-sdk
+	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.926'
+//	spring-data-dynamodb-support
+	implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	archiveBaseName = 'dynamoDbCrudApp'
+	archiveVersion =  '1.0.0'
+}
+
+task unpack(type: Copy) {
+	dependsOn bootJar
+	from(zipTree("build/libs/dynamoDbCrudApp-1.0.0.jar"))
+	into("build/dependency")
+}
+
+docker {
+	name "dynamodbcrudapp"
+//	files "build/libs/${bootJar.archiveFileName.get()}"
+//	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+	copySpec.from(tasks.unpack.outputs).into("dependency")
+	buildArgs(['DEPENDENCY': "dependency"])
+}
+
+dockerRun {
+	name  "dynamoDbCrudApp"
+	image "dynamoDbCrudApp-1.0.0"
+	ports '8082:8080'
+	clean true
+}

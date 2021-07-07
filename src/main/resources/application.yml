@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: springboot-aws-dynamodb
+
+amazon:
+  aws:
+    accesskey: DUMMYIDEXAMPLE
+    region: us-west-2
+    secretkey: DUMMYEXAMPLEKEY
+  dynamodb:
+    endpoint: 'http://dynamodb-local:8000/'
+
