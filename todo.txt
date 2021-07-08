@@ -1,0 +1,4 @@
+-- Add controller advice for exception handling
+-- Add more exception classes
+-- Add mapstruct
+-- Add swagger json export
