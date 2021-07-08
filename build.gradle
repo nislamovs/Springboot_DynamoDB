@@ -1,8 +1,10 @@
 plugins {
 	id 'application'
 	id "io.freefair.lombok" version "4.1.6"
-	id 'org.springframework.boot' version '2.4.1'
+
+	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
 	id 'com.palantir.docker' version '0.25.0'
 	id 'com.palantir.docker-run' version '0.25.0'
 	id 'java'
@@ -10,7 +12,16 @@ plugins {
 
 group = 'com.example'
 version = '1.0.0'
-sourceCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_15
+targetCompatibility = JavaVersion.VERSION_15
+
+apply plugin: 'org.springframework.boot'
+
+wrapper {
+	distributionType = Wrapper.DistributionType.ALL
+	gradleVersion = '6.8.1'
+}
+
 
 configurations {
 	compileOnly {
@@ -22,6 +33,7 @@ mainClassName = 'DynamoDemoApplication'
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -29,15 +41,27 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+	implementation 'org.springdoc:springdoc-openapi-webflux-core:1.5.4'
+	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.5.4'
+//	implementation 'org.springdoc:springdoc-openapi-data-rest:1.5.4'
+
+
+//	testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+
+//	implementation 'org.springframework.boot:spring-boot-starter-validation'
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 //	aws-java-dynamodb-sdk
 	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.926'
 //	spring-data-dynamodb-support
 	implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'
+
+	testCompile 'io.projectreactor:reactor-test:3.3.7.RELEASE'
 }
 
 test {
@@ -57,8 +81,6 @@ task unpack(type: Copy) {
 
 docker {
 	name "dynamodbcrudapp"
-//	files "build/libs/${bootJar.archiveFileName.get()}"
-//	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
 	copySpec.from(tasks.unpack.outputs).into("dependency")
 	buildArgs(['DEPENDENCY': "dependency"])
 }
@@ -66,6 +88,5 @@ docker {
 dockerRun {
 	name  "dynamoDbCrudApp"
 	image "dynamoDbCrudApp-1.0.0"
-	ports '8082:8080'
 	clean true
 }

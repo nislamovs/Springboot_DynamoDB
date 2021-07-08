@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM bellsoft/liberica-openjdk-alpine-musl:15.0.1
 
 MAINTAINER nizamiislamovs@gmail.com
 
@@ -6,8 +6,8 @@ ENV AWS_ACCESS_KEY_ID 'DUMMYIDEXAMPLE'
 ENV AWS_SECRET_ACCESS_KEY 'DUMMYEXAMPLEKEY'
 
 #Debugging
-ENV JAVA_TOOL_OPTIONS -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
-EXPOSE 8000
+#ENV JAVA_TOOL_OPTIONS -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+#EXPOSE 8000
 
 VOLUME /tmp
 EXPOSE 8080

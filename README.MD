@@ -1,5 +1,11 @@
 # SpringBoot DynamoDB CRUD App 
 
+### Stack
+
+- Java 15, Springboot 2
+- Webflux, Swagger (OpenApi)
+- DynamoDB (with pagination)
+- Docker (dockerized dynamoDb + UI for it)
 
 ### Build
 
@@ -11,8 +17,9 @@ or
 
 ### Ports
 
-|  Port  |  Description             |
-| ------ | ------------------------ |
-|  8080  | application api          |
-|  7001  | dynamo db admin ui       |
+|  Port  |                Path                    |  Description             |
+| ------ | -------------------------------------- | ------------------------ |
+|  8080  | http://localhost:8080/api/v1/          | application api          |
+|  8080  | http://localhost:8080/                 | Swagger UI               |
+|  7001  | dynamo db admin ui                     | dynamo db admin ui       |
 

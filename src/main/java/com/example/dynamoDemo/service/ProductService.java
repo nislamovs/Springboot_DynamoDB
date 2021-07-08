@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,14 +21,23 @@ public class ProductService {
 
     private final ProductRepository repository;
 
-
     public List<Product> getProducts() {
         final Iterable<Product> allProducts = repository.findAll();
         return StreamSupport.stream(allProducts.spliterator(), false).collect(Collectors.toList());
     }
 
+    public List<Product> getProducts(long page, long size) {
+        final Page<Product> allProducts = repository.findAll(
+//            PageRequest.of((int)page, (int)size, Sort.by("id").ascending()));
+            PageRequest.of((int)page, (int)size, Sort.unsorted()));
+
+        return StreamSupport.stream(allProducts.spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
     public Product getProductById(final String id) throws ProductNotFoundException {
-        return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(""));
+        return repository.findById(id)
+            .orElseThrow(() -> new ProductNotFoundException(""));
     }
 
     public void save(final ProductDto dto) {
@@ -42,11 +56,11 @@ public class ProductService {
         repository.deleteById(id);
     }
 
-    public long getProductsCount() {
+    public Long getProductsCount() {
         return repository.count();
     }
 
-    public long getProductsCountByProductCategory(final String productCategory) {
+    public Long getProductsCountByProductCategory(final String productCategory) {
         return repository.countByProductCategory(productCategory);
     }
 
