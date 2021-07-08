@@ -1,5 +1,7 @@
 package com.example.dynamoDemo.service;
 
+import static java.lang.String.format;
+
 import com.example.dynamoDemo.domain.dtos.ProductDto;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
 import com.example.dynamoDemo.models.Product;
@@ -23,7 +25,8 @@ public class ProductService {
 
     public List<Product> getProducts() {
         final Iterable<Product> allProducts = repository.findAll();
-        return StreamSupport.stream(allProducts.spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(allProducts.spliterator(), false)
+            .collect(Collectors.toList());
     }
 
     public List<Product> getProducts(long page, long size) {
@@ -37,7 +40,7 @@ public class ProductService {
 
     public Product getProductById(final String id) throws ProductNotFoundException {
         return repository.findById(id)
-            .orElseThrow(() -> new ProductNotFoundException(""));
+            .orElseThrow(() -> new ProductNotFoundException(format("Product by id [%s] was not found.", id)));
     }
 
     public void save(final ProductDto dto) {

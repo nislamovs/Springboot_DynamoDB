@@ -2,3 +2,6 @@
 -- Add more exception classes
 -- Add mapstruct
 -- Add swagger json export
+
+fix post, put, delete
+cleanup gradle.build file

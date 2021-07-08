@@ -1,6 +1,8 @@
 server:
   port: 8080
 
+Application.support.email: "nizami.islamovs@gmail.com"
+
 spring:
 #  main:
 #    allow-bean-definition-overriding: true
