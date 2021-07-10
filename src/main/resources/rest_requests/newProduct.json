@@ -1,0 +1,13 @@
+{
+  "id": "666",
+  "inPublication": true,
+  "isbn": "111-1111111111",
+  "pageCount": 500,
+  "price": 2,
+  "authors": [
+    "Satana"
+  ],
+  "productCategory": "Boozzk",
+  "title": "Book 101 Titlezz",
+  "dimensions": "8.5 x 11.0 x 0.5"
+}

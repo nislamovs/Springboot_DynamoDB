@@ -30,7 +30,7 @@ public class ProductController implements iProductController {
     private final ProductService service;
 
     @Override
-    @GetMapping("/products")
+    @GetMapping("/product")
     public Flux<?> getProducts(@RequestParam(value = "page", defaultValue = "0") long page,
                                @RequestParam(value = "size", defaultValue = "10") long size) {
         log.info("Getting all products from the db");
@@ -38,7 +38,7 @@ public class ProductController implements iProductController {
     }
 
     @Override
-    @GetMapping("/products/{productcat}")
+    @GetMapping("/product/{productcat}")
     public Flux<?> getProductsByProductCategory(@PathVariable("productcat") final String productCategory) {
         log.info("Getting products by product category = {} from the db", productCategory);
         return Flux.just(service.getProductsByProductCategory(productCategory));
@@ -53,14 +53,14 @@ public class ProductController implements iProductController {
     }
 
     @Override
-    @GetMapping("/products/count/{productcat}")
+    @GetMapping("/product/count/{productcat}")
     public Mono<?> getCountByProductCategory(@PathVariable("productcat") final String productcat) {
 
         return Mono.just(service.getProductsCountByProductCategory(productcat));
     }
 
     @Override
-    @GetMapping("/products/count")
+    @GetMapping("/product/count")
     public Mono<?> getProductCount() {
 
         return Mono.just(service.getProductsCount());

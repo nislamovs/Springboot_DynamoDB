@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import com.example.dynamoDemo.domain.dtos.ProductDto;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
+import com.example.dynamoDemo.mappers.ProductMapper;
 import com.example.dynamoDemo.models.Product;
 import com.example.dynamoDemo.repository.ProductRepository;
 import java.util.List;
@@ -22,36 +23,40 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository repository;
+    private final ProductMapper productMapper;
 
-    public List<Product> getProducts() {
+    public List<ProductDto> getProducts() {
         final Iterable<Product> allProducts = repository.findAll();
         return StreamSupport.stream(allProducts.spliterator(), false)
+            .map(productMapper::toDTO)
             .collect(Collectors.toList());
     }
 
-    public List<Product> getProducts(long page, long size) {
+    public List<ProductDto> getProducts(long page, long size) {
         final Page<Product> allProducts = repository.findAll(
 //            PageRequest.of((int)page, (int)size, Sort.by("id").ascending()));
             PageRequest.of((int)page, (int)size, Sort.unsorted()));
 
         return StreamSupport.stream(allProducts.spliterator(), false)
+            .map(productMapper::toDTO)
             .collect(Collectors.toList());
     }
 
-    public Product getProductById(final String id) throws ProductNotFoundException {
-        return repository.findById(id)
-            .orElseThrow(() -> new ProductNotFoundException(format("Product by id [%s] was not found.", id)));
+    public ProductDto getProductById(final String id) throws ProductNotFoundException {
+        var product = repository.findById(id);
+        if (product.isPresent())
+            return productMapper.toDTO(product.get());
+        else
+            throw new ProductNotFoundException(format("Product by id [%s] was not found.", id));
     }
 
-    public void save(final ProductDto dto) {
-        final Product b = createProductBuilder(dto);
-        repository.save(b);
+    public void save(final ProductDto productDto) {
+        repository.save(productMapper.toDAO(productDto));
     }
 
-    public void update(final String id, final ProductDto dto) throws ProductNotFoundException {
+    public void update(final String id, final ProductDto productDto) throws ProductNotFoundException {
         getProductById(id);
-        final Product ProductToBeUpdated = createProductBuilder(dto).toBuilder().id(id).build();
-        repository.save(ProductToBeUpdated);
+        repository.save(productMapper.toDAO(productDto));
     }
 
     public void delete(final String id) throws ProductNotFoundException {
@@ -67,12 +72,8 @@ public class ProductService {
         return repository.countByProductCategory(productCategory);
     }
 
-    public List<Product> getProductsByProductCategory(final String productCategory) {
-        return repository.findAllByProductCategory(productCategory);
-    }
-
-    private Product createProductBuilder(final ProductDto dto) {
-        return Product.builder()
-            .build();
+    public List<ProductDto> getProductsByProductCategory(final String productCategory) {
+        return repository.findAllByProductCategory(productCategory)
+            .stream().map(productMapper::toDTO).collect(Collectors.toList());
     }
 }

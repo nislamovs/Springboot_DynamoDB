@@ -1,8 +1,5 @@
 package com.example.dynamoDemo.controllers.apidocs;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
-
 import com.example.dynamoDemo.domain.dtos.ProductDto;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
 import com.example.dynamoDemo.models.Product;
@@ -60,7 +57,7 @@ public interface iProductController {
           description = "Category was not found",
           content = @Content)
   })
-  Flux<?> getProductsByProductCategory(@Parameter(description = "Page number of products to be searched") final String productCategory);
+  Flux<?> getProductsByProductCategory(@Parameter(description = "Product category to be searched") final String productCategory);
 
   @Operation(summary = "Get product by id")
   @ApiResponses(value = {
@@ -82,7 +79,7 @@ public interface iProductController {
           description = "Product was not found",
           content = @Content)
   })
-  Mono<?> getProductById(@Parameter(description = "Page number of products to be searched") final String id) throws ProductNotFoundException;
+  Mono<?> getProductById(@Parameter(description = "Id of product to be searched") final String id) throws ProductNotFoundException;
 
   @Operation(summary = "Get product count by category")
   @ApiResponses(value = {
@@ -104,7 +101,7 @@ public interface iProductController {
           description = "Category not found",
           content = @Content)
   })
-  Mono<?> getCountByProductCategory(@Parameter(description = "Page number of products to be searched") final String productcat);
+  Mono<?> getCountByProductCategory(@Parameter(description = "Product category to be searched") final String productcat);
 
   @Operation(summary = "Get product count")
   @ApiResponses(value = {
@@ -175,23 +172,4 @@ public interface iProductController {
           content = @Content)
   })
   Mono<?> save(@Parameter(description = "New product") final ProductDto dto);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
