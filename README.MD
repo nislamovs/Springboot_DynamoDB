@@ -21,5 +21,5 @@ or
 | ------ | -------------------------------------- | ------------------------ |
 |  8080  | http://localhost:8080/api/v1/          | application api          |
 |  8080  | http://localhost:8080/                 | Swagger UI               |
-|  7001  | dynamo db admin ui                     | dynamo db admin ui       |
+|  7001  | http://localhost:8080/                 | dynamo db admin ui       |
 
