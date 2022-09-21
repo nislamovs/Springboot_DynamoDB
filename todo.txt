@@ -4,5 +4,4 @@
 fix post, put, delete
 cleanup gradle.build file
 
--- sqs queue
--- twitter
+create second branch with aws sdk v2 lib usage
