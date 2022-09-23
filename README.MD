@@ -4,7 +4,7 @@
 
 - Java 15, Springboot 2
 - Webflux, Swagger (OpenApi)
-- DynamoDB (with pagination)
+- DynamoDB (with pagination), Testcontainers
 - Docker (dockerized dynamoDb + UI for it)
 
 ### Build

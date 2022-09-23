@@ -58,7 +58,11 @@ dependencies {
 //	spring-data-dynamodb-support
 	implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'
 
-	testCompile 'io.projectreactor:reactor-test:3.3.7.RELEASE'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testImplementation 'org.testcontainers:testcontainers:1.17.3'
+	testImplementation 'org.testcontainers:junit-jupiter:1.17.3'
+
+	testCompile 'io.projectreactor:reactor-test:3.4.22'
 }
 
 test {

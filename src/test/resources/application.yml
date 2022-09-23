@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+application.support.email: "nizami.islamovs@gmail.com"
+
+amazon:
+  aws:
+    accesskey: DUMMYIDEXAMPLE
+    region: us-west-2
+    secretkey: DUMMYEXAMPLEKEY
+  dynamodb:
+    endpoint: 'http://172.17.0.3:8000/'
+#    endpoint: 'http://dynamodb-test:8000/'
+#    endpoint: 'http://testcontainers-ryuk-d43c85bb-b591-4954-b86d-f9c48fae8e90:8000/'

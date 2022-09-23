@@ -5,3 +5,7 @@ fix post, put, delete
 cleanup gradle.build file
 
 create second branch with aws sdk v2 lib usage
+
+Info :
+
+https://nickolasfisher.com/blog/Setup-and-Use-a-DynamoDB-Test-Container-with-the-AWS-Java-SDK-20
