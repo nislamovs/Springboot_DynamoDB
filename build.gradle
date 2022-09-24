@@ -53,10 +53,9 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-//	aws-java-dynamodb-sdk
-	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.926'
-//	spring-data-dynamodb-support
-	implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'
+	implementation platform('software.amazon.awssdk:bom:2.15.0')
+	implementation 'software.amazon.awssdk:dynamodb'
+	implementation 'software.amazon.awssdk:dynamodb-enhanced'
 
 	testCompile 'io.projectreactor:reactor-test:3.3.7.RELEASE'
 }

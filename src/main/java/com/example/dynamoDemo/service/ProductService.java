@@ -6,10 +6,12 @@ import com.example.dynamoDemo.domain.dtos.ProductDto;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
 import com.example.dynamoDemo.mappers.ProductMapper;
 import com.example.dynamoDemo.models.Product;
-import com.example.dynamoDemo.repository.ProductRepository;
+import com.example.dynamoDemo.repository.DynamoDbRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import com.example.dynamoDemo.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +28,10 @@ public class ProductService {
     private final ProductMapper productMapper;
 
     public List<ProductDto> getProducts() {
-        final Iterable<Product> allProducts = repository.findAll();
+
+//        repository.put()
+
+        final Iterable<Product> allProducts = repository.ge();
         return StreamSupport.stream(allProducts.spliterator(), false)
             .map(productMapper::toDTO)
             .collect(Collectors.toList());
