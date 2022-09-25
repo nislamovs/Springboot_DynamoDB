@@ -2,13 +2,16 @@ package com.example.dynamoDemo.repository;
 
 import com.example.dynamoDemo.models.Product;
 import org.springframework.stereotype.Repository;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient;
 
 @Repository
-public interface ProductRepository extends DynamoDbRepository<Product>{
+public class ProductRepository extends DynamoDbRepositoryImpl<Product> {
 
-        long countByProductCategory(String productCategory);
-//
-//    List<Product> findAllByProductCategory(String productCategory);
-//
-//    Page<Product> findAll(Pageable pageable);
+    public ProductRepository(DynamoDbEnhancedAsyncClient enhancedAsyncClient) {
+        super(enhancedAsyncClient);
+    }
+
+    public long countByProductCategory(String productCategory){
+
+    }
 }

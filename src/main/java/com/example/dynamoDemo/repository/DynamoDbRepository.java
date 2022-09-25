@@ -14,7 +14,7 @@ import software.amazon.awssdk.enhanced.dynamodb.model.UpdateItemEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Repository
-public abstract interface DynamoDbRepository<T> {
+public interface DynamoDbRepository<T> {
 
     <T> CompletableFuture<T> getConsistent(Key key, DynamoDbAsyncTable<T> table);
 

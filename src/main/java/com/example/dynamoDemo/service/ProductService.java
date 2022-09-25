@@ -6,7 +6,7 @@ import com.example.dynamoDemo.domain.dtos.ProductDto;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
 import com.example.dynamoDemo.mappers.ProductMapper;
 import com.example.dynamoDemo.models.Product;
-import com.example.dynamoDemo.repository.DynamoDbRepository;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,9 +29,7 @@ public class ProductService {
 
     public List<ProductDto> getProducts() {
 
-//        repository.put()
-
-        final Iterable<Product> allProducts = repository.ge();
+        final Iterable<Product> allProducts = repository.findAll();
         return StreamSupport.stream(allProducts.spliterator(), false)
             .map(productMapper::toDTO)
             .collect(Collectors.toList());
