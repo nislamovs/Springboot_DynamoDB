@@ -43,25 +43,4 @@ public class DynamoDbConfiguration {
         .withCredentials(awsCredentialsProvider())
         .build();
   }
-
-
-
-
-
-
-
-
-
-
-  //----------------
-//  @Bean
-//  public AmazonDynamoDB amazonDynamoDB() {
-//    return AmazonDynamoDBClientBuilder
-//        .standard()
-////        .withEndpointConfiguration(endpointConfiguration())
-////        .withCredentials(awsCredentialsProvider())
-//        .withRegion(Regions.US_WEST_2)
-//        .build();
-//  }
-
 }
