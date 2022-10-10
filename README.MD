@@ -1,4 +1,4 @@
-# SpringBoot DynamoDB CRUD App 
+# SpringBoot DynamoDB CRUD App (AWS SDK Java v2)
 
 ### Stack
 
