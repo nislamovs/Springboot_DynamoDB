@@ -14,6 +14,10 @@
 or
 
 - go to `./scripts` and run `./buildNrun.sh`
+- 
+### AWS SDK Java v2
+
+- In this repo there is also another branch `aws-sdk-v2`, which contains implementation using AWS SDK Java v2.
 
 ### Ports
 
