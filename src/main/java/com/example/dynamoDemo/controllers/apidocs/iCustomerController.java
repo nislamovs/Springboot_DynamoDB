@@ -1,8 +1,8 @@
 package com.example.dynamoDemo.controllers.apidocs;
 
-import com.example.dynamoDemo.domain.dtos.ProductDto;
+import com.example.dynamoDemo.domain.dtos.CustomerDto;
+import com.example.dynamoDemo.domain.exceptions.CustomerNotFoundException;
 import com.example.dynamoDemo.domain.exceptions.ProductNotFoundException;
-import com.example.dynamoDemo.models.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,17 +14,17 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ExecutionException;
 
-public interface iProductController {
+public interface iCustomerController {
 
-  @Operation(summary = "Get page of products")
+  @Operation(summary = "Get page of customers")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns page of products",
+          description = "Returns page of customers",
           content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = ProductDto.class)
+                  schema = @Schema(implementation = CustomerDto.class)
               )
           }),
       @ApiResponse(
@@ -33,21 +33,21 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Products were not found",
+          description = "Customers were not found",
           content = @Content)
   })
-  Flux<?> getProducts(@Parameter(description = "Page number of products to be searched") long page,
-                      @Parameter(description = "Page size of products to be searched") long size);
+  Flux<?> getCustomers(@Parameter(description = "Page number of customers to be searched") long page,
+                      @Parameter(description = "Page size of customers to be searched") long size);
 
-  @Operation(summary = "Get page of products")
+  @Operation(summary = "Get page of customers")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns page of products",
+          description = "Returns customer with email",
           content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = ProductDto.class)
+                  schema = @Schema(implementation = CustomerDto.class)
               )
           }),
       @ApiResponse(
@@ -56,20 +56,20 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Category was not found",
+          description = "Email was not found",
           content = @Content)
   })
-  Flux<?> getProductsByProductCategory(@Parameter(description = "Product category to be searched") final String productCategory);
+  Flux<?> getCustomerByEmail(@Parameter(description = "Email to be searched") final String email);
 
-  @Operation(summary = "Get product by id")
+  @Operation(summary = "Get customer by id")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns product by id",
+          description = "Returns customer by id",
           content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = ProductDto.class)
+                  schema = @Schema(implementation = CustomerDto.class)
               )
           }),
       @ApiResponse(
@@ -78,16 +78,16 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Product was not found",
+          description = "Customer was not found",
           content = @Content)
   })
-  Mono<?> getProductById(@Parameter(description = "Id of product to be searched") final String id) throws ProductNotFoundException, ExecutionException, InterruptedException;
+  Mono<?> getCustomerById(@Parameter(description = "Id of customer to be searched") final String id) throws CustomerNotFoundException, ExecutionException, InterruptedException;
 
-  @Operation(summary = "Get product count")
+  @Operation(summary = "Get customer count")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns product count",
+          description = "Returns customer count",
           content = {
               @Content(
                   mediaType = "application/json",
@@ -100,12 +100,12 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Product was not found",
+          description = "Customer was not found",
           content = @Content)
   })
-  Mono<?> getProductCount();
+  Mono<?> getCustomerCount();
 
-  @Operation(summary = "Delete product by id")
+  @Operation(summary = "Delete customer by id")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
@@ -117,16 +117,16 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Product was not found",
+          description = "Customer was not found",
           content = @Content)
   })
-  Mono<?> deleteProduct(@Parameter(description = "Product Id") final String id) throws ProductNotFoundException, ExecutionException, InterruptedException;
+  Mono<?> deleteCustomer(@Parameter(description = "Customer Id") final String id) throws CustomerNotFoundException, ProductNotFoundException, ExecutionException, InterruptedException;
 
-  @Operation(summary = "Update product")
+  @Operation(summary = "Update customer")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns acknowledge [product updated]",
+          description = "Returns acknowledge [customer updated]",
           content = @Content),
       @ApiResponse(
           responseCode = "400",
@@ -134,22 +134,34 @@ public interface iProductController {
           content = @Content),
       @ApiResponse(
           responseCode = "404",
-          description = "Product was not found",
+          description = "Customer was not found",
           content = @Content)
   })
-  Mono<?> update(@Parameter(description = "Product Id") final String id,
-                 @Parameter(description = "Product data") final ProductDto dto) throws ProductNotFoundException, ExecutionException, InterruptedException;
+  Mono<?> updateCustomer(@Parameter(description = "Customer Id") final String id,
+                 @Parameter(description = "Customer data") final CustomerDto dto) throws CustomerNotFoundException, ExecutionException, InterruptedException;
 
-  @Operation(summary = "Adds new product")
+  @Operation(summary = "Adds new customer")
   @ApiResponses(value = {
       @ApiResponse(
           responseCode = "200",
-          description = "Returns acknowledge [product created]",
+          description = "Returns acknowledge [customer created]",
           content = @Content),
       @ApiResponse(
           responseCode = "400",
           description = "Bad request",
           content = @Content)
   })
-  Mono<?> save(@Parameter(description = "New product") final ProductDto dto);
+  Mono<?> saveCustomer(@Parameter(description = "New customer") final CustomerDto dto);
+
+  @Operation(summary = "Generate new customers")
+  @ApiResponses(value = {
+          @ApiResponse(
+                  responseCode = "202",
+                  description = "Returns acknowledge"),
+          @ApiResponse(
+                  responseCode = "400",
+                  description = "Bad request",
+                  content = @Content)
+  })
+  Mono<?> generateCustomers(@Parameter(description = "Number of new customers") final Integer count);
 }

@@ -1,5 +1,6 @@
 package com.example.dynamoDemo.repository;
 
+import com.example.dynamoDemo.models.Customer;
 import com.example.dynamoDemo.models.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,19 +22,19 @@ import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepository {
+public class CustomerRepository {
 
-    private DynamoDbAsyncTable<Product> productTable;
     private final DynamoDbEnhancedAsyncClient enhancedAsyncClient;
+    private DynamoDbAsyncTable<Customer> customerTable;
     private final DynamoDbClient dynamoDbClient;
 
     @PostConstruct
     void init() {
-        productTable = enhancedAsyncClient.table("ProductCategory", TableSchema.fromBean(Product.class));
+        customerTable = enhancedAsyncClient.table("Customers", TableSchema.fromBean(Customer.class));
     }
 
     //Pagination
-    public SdkPublisher<Page<Product>> findAll(String lastId, Integer limit) {
+    public SdkPublisher<Page<Customer>> findAll(String lastId, Integer limit) {
 
         Map<String, AttributeValue> exclusiveStartKey = !isNullOrEmpty(lastId)
                 ? Map.of("Id", AttributeValue.builder().s(lastId).build())
@@ -46,35 +47,35 @@ public class ProductRepository {
                 .limit(itemsPerPage)
                 .build();
 
-        return productTable.scan(request).limit(1);
+        return customerTable.scan(request).limit(1);
     }
 
-    public PagePublisher<Product> findAll() {
-        return productTable.scan();
+    public PagePublisher<Customer> findAll() {
+        return customerTable.scan();
     }
 
     //Find item
-    public CompletableFuture<Product> findById(String id) {
+    public CompletableFuture<Customer> findById(String id) {
         Key key = Key.builder().partitionValue(id).build();
         GetItemEnhancedRequest request = GetItemEnhancedRequest.builder()
                 .key(key)
                 .consistentRead(true)
                 .build();
 
-        return productTable.getItem(request);
+        return customerTable.getItem(request);
     }
 
-    public PagePublisher<Product> findByProductCategory(String productCategory) {
+    public PagePublisher<Customer> findCustomerByEmail(String email) {
 
         AttributeValue att = AttributeValue.builder()
-                .s(productCategory)
+                .s(email)
                 .build();
 
         Map<String, AttributeValue> expressionValues = new HashMap<>();
-        expressionValues.put(":productCategory", att);
+        expressionValues.put(":email", att);
 
         Expression expression = Expression.builder()
-                .expression("ProductCategory = :productCategory")
+                .expression("Email = :email")
                 .expressionValues(expressionValues)
                 .build();
 
@@ -83,75 +84,75 @@ public class ProductRepository {
                 .filterExpression(expression)
                 .build();
 
-        return productTable.scan(request);
+        return customerTable.scan(request);
     }
 
 //Count
 
     public long countDbItems(){
         DescribeTableRequest request = DescribeTableRequest.builder()
-                .tableName(productTable.tableName())
+                .tableName(customerTable.tableName())
                 .build();
 
         TableDescription tableInfo = dynamoDbClient.describeTable(request).table();
         return tableInfo.itemCount();
     }
 
-    //Save
-    public CompletableFuture<Void> save(Product product) {
-        PutItemEnhancedRequest<Product> request = PutItemEnhancedRequest.builder(Product.class)
+//Save
+    public CompletableFuture<Void> save(Customer product) {
+        PutItemEnhancedRequest<Customer> request = PutItemEnhancedRequest.builder(Customer.class)
                 .item(product)
                 .build();
 
-        return productTable.putItem(request);
+        return customerTable.putItem(request);
     }
 
-    public CompletableFuture<Void> save(Product product, Expression conditionExpression) {
-        PutItemEnhancedRequest<Product> request = PutItemEnhancedRequest.builder(Product.class)
+    public CompletableFuture<Void> save(Customer product, Expression conditionExpression) {
+        PutItemEnhancedRequest<Customer> request = PutItemEnhancedRequest.builder(Customer.class)
                 .conditionExpression(conditionExpression)
                 .item(product)
                 .build();
 
-        return productTable.putItem(request);
+        return customerTable.putItem(request);
     }
 
-    //Update
-    public CompletableFuture<Product> update(Product product) {
-        UpdateItemEnhancedRequest<Product> request = UpdateItemEnhancedRequest.builder(Product.class)
+//Update
+    public CompletableFuture<Customer> update(Customer product) {
+        UpdateItemEnhancedRequest<Customer> request = UpdateItemEnhancedRequest.builder(Customer.class)
                 .item(product)
                 .ignoreNulls(true)
                 .build();
 
-        return productTable.updateItem(request);
+        return customerTable.updateItem(request);
     }
 
-    public CompletableFuture<Product> update(Product product, Expression conditionExpression) {
-        UpdateItemEnhancedRequest<Product> request = UpdateItemEnhancedRequest.builder(Product.class)
+    public CompletableFuture<Customer> update(Customer product, Expression conditionExpression) {
+        UpdateItemEnhancedRequest<Customer> request = UpdateItemEnhancedRequest.builder(Customer.class)
                 .conditionExpression(conditionExpression)
                 .item(product)
                 .ignoreNulls(true)
                 .build();
 
-        return productTable.updateItem(request);
+        return customerTable.updateItem(request);
     }
 
-    //Delete
-    public CompletableFuture<Product> deleteById(String id) {
+//Delete
+    public CompletableFuture<Customer> deleteById(String id) {
         Key key = Key.builder().partitionValue(id).build();
         DeleteItemEnhancedRequest request = DeleteItemEnhancedRequest.builder()
                 .key(key)
                 .build();
 
-        return productTable.deleteItem(request);
+        return customerTable.deleteItem(request);
     }
 
-    public CompletableFuture<Product> deleteById(String id, Expression conditionExpression) {
+    public CompletableFuture<Customer> deleteById(String id, Expression conditionExpression) {
         Key key = Key.builder().partitionValue(id).build();
         DeleteItemEnhancedRequest request = DeleteItemEnhancedRequest.builder()
-                .key(key)
-                .conditionExpression(conditionExpression)
-                .build();
+            .key(key)
+            .conditionExpression(conditionExpression)
+            .build();
 
-        return productTable.deleteItem(request);
+        return customerTable.deleteItem(request);
     }
 }

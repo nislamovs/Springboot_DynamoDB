@@ -67,7 +67,7 @@ public class DynamoDbConfiguration {
   }
 
   @Bean
-  public DynamoDbEnhancedAsyncClient getDynamoDbEnhancedAsyncClient(DynamoDbAsyncClient dynamoDbAsyncClient) {
+  public DynamoDbEnhancedAsyncClient dynamoDbEnhancedAsyncClient(DynamoDbAsyncClient dynamoDbAsyncClient) {
     return DynamoDbEnhancedAsyncClient.builder()
             .dynamoDbClient(dynamoDbAsyncClient)
             .build();

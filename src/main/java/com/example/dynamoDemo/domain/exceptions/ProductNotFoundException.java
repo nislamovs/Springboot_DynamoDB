@@ -7,6 +7,10 @@ public class ProductNotFoundException extends Exception {
         super(msg);
     }
 
+    public static ProductNotFoundException withMessage(String message) {
+        return new ProductNotFoundException(message);
+    }
+
     public ProductNotFoundException(String msg, Throwable t) {
         super(msg, t);
     }

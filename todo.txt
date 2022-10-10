@@ -5,3 +5,8 @@ fix post, put, delete
 cleanup gradle.build file
 
 create second branch with aws sdk v2 lib usage
+Create tablename resolver
+
+Info:
+
+https://levelup.gitconnected.com/connect-your-micro-service-spring-boot-application-to-aws-dynamodb-e86a430d418e
