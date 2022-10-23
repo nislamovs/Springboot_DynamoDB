@@ -59,6 +59,8 @@ dependencies {
 	implementation 'software.amazon.awssdk:dynamodbmapper-v1'
 	implementation 'software.amazon.awssdk:dynamodbdocument-v1'
 
+	implementation 'com.github.javafaker:javafaker:0.12'
+
 	testCompile 'io.projectreactor:reactor-test:3.3.7.RELEASE'
 }
 

@@ -7,10 +7,6 @@ import java.util.function.Consumer;
 
 public class DbUtils<T> {
 
-    public String getLastEvaluatedKey(Page<T> page) {
-        return page.lastEvaluatedKey() == null ? null : page.lastEvaluatedKey().get("Id").s();
-    }
-
     public static BiConsumer<Object, ? super Throwable> doOnError(
             Consumer<? super Throwable> action) {
         return ((o, throwable) -> {
@@ -18,5 +14,9 @@ public class DbUtils<T> {
                 action.accept(throwable);
             }
         });
+    }
+
+    public String getLastEvaluatedKey(Page<T> page) {
+        return page.lastEvaluatedKey() == null ? null : page.lastEvaluatedKey().get("Id").s();
     }
 }

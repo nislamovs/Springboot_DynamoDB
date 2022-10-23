@@ -18,6 +18,7 @@ public class CustomerDto {
     private Address address;
 
     @Data
+    @Builder
     public static class Address {
         private String street;
         private String postcode;

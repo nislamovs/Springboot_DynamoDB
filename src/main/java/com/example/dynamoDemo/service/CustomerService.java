@@ -13,12 +13,14 @@ import com.example.dynamoDemo.models.Product;
 import com.example.dynamoDemo.repository.CustomerRepository;
 import com.example.dynamoDemo.utils.CompletableFutureUtils;
 import com.example.dynamoDemo.utils.DbUtils;
+import com.example.dynamoDemo.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -108,5 +110,16 @@ public class CustomerService {
     }
 
     public void generateNewCustomers(Integer count) {
+        List<CustomerDto> customers = new ArrayList<>();
+        for (int n = 0; n < count; n++) {
+            customers.add(Utils.generateCustomer());
+        }
+        CustomerDtos customerList = CustomerDtos.builder().items(customers).build();
+        List<Customer> customersDaos = customerList.getItems().stream()
+                .map(customerMapper::toDAO).collect(Collectors.toList());
+
+        customerRepository.batchWrite(customersDaos)
+                .whenComplete(CompletableFutureUtils.doOnError(
+                        throwable -> log.error("DynamoDB batch save failed", throwable.getCause())));
     }
 }

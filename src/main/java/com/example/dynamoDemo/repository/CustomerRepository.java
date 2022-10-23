@@ -1,7 +1,7 @@
 package com.example.dynamoDemo.repository;
 
+import com.example.dynamoDemo.domain.dtos.CustomerDtos;
 import com.example.dynamoDemo.models.Customer;
-import com.example.dynamoDemo.models.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.core.async.SdkPublisher;
@@ -13,6 +13,7 @@ import software.amazon.awssdk.services.dynamodb.model.DescribeTableRequest;
 import software.amazon.awssdk.services.dynamodb.model.TableDescription;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,5 +155,19 @@ public class CustomerRepository {
             .build();
 
         return customerTable.deleteItem(request);
+    }
+
+    public CompletableFuture<BatchWriteResult> batchWrite(List<Customer> customerList) {
+        WriteBatch.Builder<Customer> wb = WriteBatch.builder(Customer.class)          // add items to the Customer table
+                .mappedTableResource(customerTable);
+
+        customerList.forEach(item -> wb.addPutItem(builder -> builder.item(item)));
+        wb.build();
+
+        BatchWriteItemEnhancedRequest batchWriteItemEnhancedRequest = BatchWriteItemEnhancedRequest.builder()
+                .writeBatches((Collection<WriteBatch>) wb)
+                .build();
+
+        return enhancedAsyncClient.batchWriteItem(batchWriteItemEnhancedRequest);
     }
 }

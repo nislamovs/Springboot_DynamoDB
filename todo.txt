@@ -1,18 +1,14 @@
 -- Add mapstruct                                                                                            OK
--- Add swagger json export
+-- Add swagger json export                                                                                  --
 
-fix post, put, delete
-cleanup gradle.build file
-
-create second branch with aws sdk v2 lib usage
 Create tablename resolver
 
-- Check everything
-- add data to customers table
-- testcontainers
-- add batch write
-- add query
-- add scan
+- Check everything                                                                                          --
+- add data to customers table                                                                               --
+- testcontainers                                                                                            --
+- add batch write                                                                                           OK
+- add query                                                                                                 --
+- add scan                                                                                                  --
 
 Info:
 
