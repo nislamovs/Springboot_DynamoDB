@@ -1,0 +1,184 @@
+{
+    "Customers": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "to6yu35g76y895h76y4"
+                    },
+                    "Firstname": {
+                        "S": "John"
+                    },
+                    "Lastname": {
+                        "S": "Doe"
+                    },
+                    "RegisteredDate": {
+                        "S": "01.01.2001"
+                    },
+                    "Email": {
+                        "S": "test.chronos@gmail.com"
+                    },
+                    "Street": {
+                        "S": "Super street 2"
+                    },
+                    "Postcode": {
+                        "S": "LT-1020"
+                    },
+                    "City": {
+                        "S": "City17"
+                    },
+                    "Country": {
+                        "S": "Denmark"
+                    },
+                    "PhoneNumber": {
+                        "S": "+123-4545-33-33"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "34b563456n345738hjm"
+                    },
+                    "Firstname": {
+                        "S": "Vladimir"
+                    },
+                    "Lastname": {
+                        "S": "Dorogin"
+                    },
+                    "RegisteredDate": {
+                        "S": "11.11.1985"
+                    },
+                    "Email": {
+                        "S": "allah.babah@kgb.ru"
+                    },
+                    "Street": {
+                        "S": "Ljubjanka 38"
+                    },
+                    "Postcode": {
+                        "S": "asasdasd-10101"
+                    },
+                    "City": {
+                        "S": "St.Petersburg"
+                    },
+                    "Country": {
+                        "S": "Samaja prekrasnaja strana na svete"
+                    },
+                    "PhoneNumber": {
+                        "S": "+095-4599-33-00"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "3457n34573bv4563v6"
+                    },
+                    "Firstname": {
+                        "S": "Mister"
+                    },
+                    "Lastname": {
+                        "S": "Twister"
+                    },
+                    "RegisteredDate": {
+                        "S": "11.06.1997"
+                    },
+                    "Email": {
+                        "S": "debili.bljaa@mail.ru"
+                    },
+                    "Street": {
+                        "S": "Proletarskaja 69"
+                    },
+                    "Postcode": {
+                        "S": "Pochtovij jashik 1063"
+                    },
+                    "City": {
+                        "S": "New-Moscow"
+                    },
+                    "Country": {
+                        "S": "USA"
+                    },
+                    "PhoneNumber": {
+                        "S": "+4545-56745-6784543-33"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "n60p978456073352345"
+                    },
+                    "Firstname": {
+                        "S": "Alice"
+                    },
+                    "Lastname": {
+                        "S": "Baker"
+                    },
+                    "RegisteredDate": {
+                        "S": "11.11.2011"
+                    },
+                    "Email": {
+                        "S": "yandex@gmail.com"
+                    },
+                    "Street": {
+                        "S": "Paper street 1-88"
+                    },
+                    "Postcode": {
+                        "S": "LBX-586-33"
+                    },
+                    "City": {
+                        "S": "Ottawa"
+                    },
+                    "Country": {
+                        "S": "Canada"
+                    },
+                    "PhoneNumber": {
+                        "S": "+123-777776455-33-33"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "iodbfruy9034586790"
+                    },
+                    "Firstname": {
+                        "S": "Walter"
+                    },
+                    "Lastname": {
+                        "S": "Zero"
+                    },
+                    "RegisteredDate": {
+                        "S": "01.01.1965"
+                    },
+                    "Email": {
+                        "S": "insulator@yahoo.com"
+                    },
+                    "Street": {
+                        "S": "Wall street 44"
+                    },
+                    "Postcode": {
+                        "S": "LA-1111"
+                    },
+                    "City": {
+                        "S": "Riga"
+                    },
+                    "Country": {
+                        "S": "Germany"
+                    },
+                    "PhoneNumber": {
+                        "S": "+123-8888-33-33"
+                    }
+                }
+            }
+        }
+    ]
+}

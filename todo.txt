@@ -4,7 +4,7 @@
 Create tablename resolver
 
 - Check everything                                                                                          --
-- add data to customers table                                                                               --
+- add data to customers table                                                                               OK
 - testcontainers                                                                                            --
 - add batch write                                                                                           OK
 - add query                                                                                                 --
