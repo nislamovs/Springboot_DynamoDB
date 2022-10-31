@@ -1,7 +1,4 @@
--- Add mapstruct                                                                                            OK
--- Add swagger json export                                                                                  --
-
-Create tablename resolver
+Create tablename resolver                                                                                   --  ?
 
 - Check everything                                                                                          --
 - add data to customers table                                                                               OK
@@ -9,6 +6,7 @@ Create tablename resolver
 - add batch write                                                                                           OK
 - add query                                                                                                 --
 - add scan                                                                                                  --
+- global secondary index                                                                                    OK
 
 Info:
 

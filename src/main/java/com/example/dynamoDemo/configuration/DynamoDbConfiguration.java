@@ -21,6 +21,8 @@ import static software.amazon.awssdk.core.client.config.SdkAdvancedAsyncClientOp
 @Configuration
 public class DynamoDbConfiguration {
 
+  public static final String COUNTRY_INDEX = "Country-index";
+
   @Value("${amazon.dynamodb.endpoint}")
   String endpoint;
   @Value("${amazon.aws.accesskey}")

@@ -148,6 +148,78 @@
             "PutRequest": {
                 "Item": {
                     "Id": {
+                        "S": "trnye5t7546n7"
+                    },
+                    "Firstname": {
+                        "S": "Walter"
+                    },
+                    "Lastname": {
+                        "S": "Two"
+                    },
+                    "RegisteredDate": {
+                        "S": "01.11.1945"
+                    },
+                    "Email": {
+                        "S": "insulator2@yahoo.com"
+                    },
+                    "Street": {
+                        "S": "Wall street 35"
+                    },
+                    "Postcode": {
+                        "S": "LA-2222"
+                    },
+                    "City": {
+                        "S": "Riga"
+                    },
+                    "Country": {
+                        "S": "Germany"
+                    },
+                    "PhoneNumber": {
+                        "S": "+123-6666-33-33"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "S": "gfnhjghj6776em"
+                    },
+                    "Firstname": {
+                        "S": "Walter"
+                    },
+                    "Lastname": {
+                        "S": "One"
+                    },
+                    "RegisteredDate": {
+                        "S": "01.11.1955"
+                    },
+                    "Email": {
+                        "S": "insulator1@yahoo.com"
+                    },
+                    "Street": {
+                        "S": "Wall street 45"
+                    },
+                    "Postcode": {
+                        "S": "LA-2222"
+                    },
+                    "City": {
+                        "S": "Riga"
+                    },
+                    "Country": {
+                        "S": "Germany"
+                    },
+                    "PhoneNumber": {
+                        "S": "+123-7777-33-33"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
                         "S": "iodbfruy9034586790"
                     },
                     "Firstname": {
