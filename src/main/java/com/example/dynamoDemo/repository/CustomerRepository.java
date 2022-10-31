@@ -95,7 +95,7 @@ public class CustomerRepository {
                 .tableName(customerTable.tableName())
                 .build();
 
-        TableDescription tableInfo = dynamoDbClient.describeTable(request).get().table();
+        TableDescription tableInfo = dynamoDbClient.describeTable(request).join().table();
         return tableInfo.itemCount();
     }
 
@@ -162,10 +162,10 @@ public class CustomerRepository {
                 .mappedTableResource(customerTable);
 
         customerList.forEach(item -> wb.addPutItem(builder -> builder.item(item)));
-        wb.build();
+        WriteBatch batch = wb.build();
 
         BatchWriteItemEnhancedRequest batchWriteItemEnhancedRequest = BatchWriteItemEnhancedRequest.builder()
-                .writeBatches((Collection<WriteBatch>) wb)
+                .writeBatches(batch)
                 .build();
 
         return enhancedAsyncClient.batchWriteItem(batchWriteItemEnhancedRequest);

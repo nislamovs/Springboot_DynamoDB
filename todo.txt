@@ -8,6 +8,12 @@ Create tablename resolver                                                       
 - add scan                                                                                                  --
 - global secondary index                                                                                    OK
 
+- wait till completion code/tests
+- more tests
+- add testcontainer for dynamodb ui
+- autolaunch browser with link to dynamodb ui
+
 Info:
 
 https://levelup.gitconnected.com/connect-your-micro-service-spring-boot-application-to-aws-dynamodb-e86a430d418e
+https://nickolasfisher.com/blog/Setup-and-Use-a-DynamoDB-Test-Container-with-the-AWS-Java-SDK-20

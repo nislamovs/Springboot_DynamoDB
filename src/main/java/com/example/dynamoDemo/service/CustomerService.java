@@ -118,8 +118,6 @@ public class CustomerService {
         List<Customer> customersDaos = customerList.getItems().stream()
                 .map(customerMapper::toDAO).collect(Collectors.toList());
 
-        customerRepository.batchWrite(customersDaos)
-                .whenComplete(CompletableFutureUtils.doOnError(
-                        throwable -> log.error("DynamoDB batch save failed", throwable.getCause())));
+        customerRepository.batchWrite(customersDaos).join();
     }
 }
