@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+application.support.email: "nizami.islamovs@gmail.com"
+
+amazon:
+  aws:
+    accesskey: DUMMYIDEXAMPLE
+    region: us-west-2
+    secretkey: DUMMYEXAMPLEKEY
