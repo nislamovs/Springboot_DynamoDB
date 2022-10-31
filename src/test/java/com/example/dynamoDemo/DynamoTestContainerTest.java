@@ -5,6 +5,8 @@ import com.example.dynamoDemo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Random;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
