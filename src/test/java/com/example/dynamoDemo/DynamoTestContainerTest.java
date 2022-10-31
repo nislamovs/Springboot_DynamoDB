@@ -2,8 +2,20 @@ package com.example.dynamoDemo;
 
 import com.example.dynamoDemo.models.Product;
 import com.example.dynamoDemo.repository.ProductRepository;
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.containers.BindMode;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
 import java.util.Random;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -49,7 +61,7 @@ public class DynamoTestContainerTest {
 
     @Test
     public void testStuff() {
-        assertThat(productRepository.count()).isGreaterThanOrEqualTo(10);
+        assertThat(productRepository.countDbItems()).isGreaterThanOrEqualTo(10);
         assertThat(client.listTables().getTableNames().contains("ProductCatalog")).isTrue();
     }
 
