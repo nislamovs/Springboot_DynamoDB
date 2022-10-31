@@ -24,13 +24,13 @@ public class DynamoDbConfiguration {
   public static final String COUNTRY_INDEX = "Country-index";
 
   @Value("${amazon.dynamodb.endpoint}")
-  String endpoint;
+  private String endpoint;
   @Value("${amazon.aws.accesskey}")
-  String accesskey;
+  private String accesskey;
   @Value("${amazon.aws.secretkey}")
-  String secretkey;
+  private String secretkey;
   @Value("${amazon.aws.region}")
-  String region;
+  private String region;
 
   @Bean
   public ThreadPoolExecutor dynamoDBExecutor() {

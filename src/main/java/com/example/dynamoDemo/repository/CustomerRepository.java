@@ -1,6 +1,5 @@
 package com.example.dynamoDemo.repository;
 
-import com.example.dynamoDemo.domain.dtos.CustomerDtos;
 import com.example.dynamoDemo.models.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

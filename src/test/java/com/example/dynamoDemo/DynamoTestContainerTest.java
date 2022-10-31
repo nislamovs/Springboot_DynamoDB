@@ -1,20 +1,23 @@
 package com.example.dynamoDemo;
 
+import com.example.dynamoDemo.configuration.DynamoDbTestConfiguration;
 import com.example.dynamoDemo.models.Product;
 import com.example.dynamoDemo.repository.ProductRepository;
 import com.github.dockerjava.api.command.CreateContainerCmd;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -22,20 +25,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@Import(DynamoDbTestConfiguration.class)
 public class DynamoTestContainerTest {
 
     @Autowired
     private ProductRepository productRepository;
-    private static AmazonDynamoDB client;
 
-    private static String accessKey = "DUMMYIDEXAMPLE";
-    private static String secretKey = "DUMMYEXAMPLEKEY";
-    private static String region = "us-west-2";
+    @Autowired
+    private DynamoDbAsyncClient asyncClient;
 
     @Container
     static GenericContainer dynamoDb = new GenericContainer(
             DockerImageName.parse("amazon/dynamodb-local"))
-//            .withAccessToHost(true)
+            .withAccessToHost(true)
             .withExposedPorts(8000)
             .withFileSystemBind("./src/test/resources/dynamodb", "/home/dynamodblocal/data", BindMode.READ_WRITE)
             .withCommand("-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath /home/dynamodblocal/data")
@@ -47,32 +49,21 @@ public class DynamoTestContainerTest {
             .waitingFor(Wait.forHttp("/").forStatusCode(200))
             .waitingFor(Wait.forListeningPort());
 
-    @BeforeAll
-    public static void init() {
-        var endpointUrl = String.format("http://localhost:%d", dynamoDb.getFirstMappedPort());
-        AWSStaticCredentialsProvider awsCredProvider = new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey));
-        AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(endpointUrl, region);
-
-        client = AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(endpoint)
-                .withCredentials(awsCredProvider)
-                .build();
-    }
-
     @Test
-    public void testStuff() {
+    public void testStuff() throws ExecutionException, InterruptedException {
         assertThat(productRepository.countDbItems()).isGreaterThanOrEqualTo(10);
-        assertThat(client.listTables().getTableNames().contains("ProductCatalog")).isTrue();
+        assertThat(asyncClient.listTables().get().tableNames().contains("ProductCatalog")).isTrue();
+        assertThat(asyncClient.listTables().get().tableNames().contains("Customers")).isTrue();
     }
 
     @Test
-    public void testRecordContent() {
+    public void testRecordContent() throws ExecutionException, InterruptedException {
         Product product = productRepository.findById("203").get();
         assertThat(product.getProductCategory()).isEqualTo("Bicycle");
     }
 
     @Test
-    public void testAddRecord() {
+    public void testAddRecord() throws ExecutionException, InterruptedException {
 
         String newId = String.valueOf(new Random().nextInt());
         Product product = Product.builder()
