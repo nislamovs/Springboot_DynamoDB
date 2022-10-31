@@ -19,5 +19,9 @@
       "KeyType": "RANGE",
       "AttributeName": "ProductCategory"
     }
-  ]
+  ],
+  "ProvisionedThroughput": {
+    "WriteCapacityUnits": 5,
+    "ReadCapacityUnits": 5
+  }
 }

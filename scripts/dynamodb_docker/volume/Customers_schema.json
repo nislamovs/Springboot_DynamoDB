@@ -19,6 +19,10 @@
       "Projection": {
         "ProjectionType": "ALL"
       },
+      "ProvisionedThroughput": {
+        "WriteCapacityUnits": 5,
+        "ReadCapacityUnits": 5
+      },
       "KeySchema": [
         {
           "KeyType": "HASH",
@@ -31,6 +35,10 @@
       ]
     }
   ],
+  "ProvisionedThroughput": {
+    "WriteCapacityUnits": 5,
+    "ReadCapacityUnits": 5
+  },
   "TableName": "Customers",
   "KeySchema": [
     {

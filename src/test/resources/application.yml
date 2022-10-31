@@ -13,4 +13,4 @@ amazon:
     region: us-west-2
     secretkey: DUMMYEXAMPLEKEY
   dynamodb:
-    endpoint: 'http://dynamodb-test:8000/'
+    endpoint: 'http://localhost:8000'
