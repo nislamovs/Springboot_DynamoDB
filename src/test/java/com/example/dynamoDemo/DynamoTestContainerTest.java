@@ -36,8 +36,8 @@ public class DynamoTestContainerTest {
 
     @Container
     static GenericContainer dynamoDb = new GenericContainer(
-            DockerImageName.parse("amazon/dynamodb-local"))
-            .withAccessToHost(true)
+            DockerImageName.parse("amazon/dynamodb-local:latest"))
+//            .withAccessToHost(true)
             .withExposedPorts(8000)
             .withFileSystemBind("./src/test/resources/dynamodb", "/home/dynamodblocal/data", BindMode.READ_WRITE)
             .withCommand("-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath /home/dynamodblocal/data")

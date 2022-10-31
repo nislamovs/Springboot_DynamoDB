@@ -4,19 +4,20 @@ package com.example.dynamoDemo.service;
 import com.example.dynamoDemo.domain.dtos.TableDescr;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
 public class TableDescriptionService {
 
-    private final DynamoDbClient dynamoDbClient;
+    private final DynamoDbAsyncClient dynamoDbClient;
 
-    public List<TableDescr> getTableInfo() {
+    public List<TableDescr> getTableInfo() throws ExecutionException, InterruptedException {
 
         List<TableDescr> desc = new ArrayList<>();
         desc.add(describeDynamoDBTable("ProductCatalog"));
@@ -25,14 +26,14 @@ public class TableDescriptionService {
         return desc;
     }
 
-    private TableDescr describeDynamoDBTable(String tableName) {
+    private TableDescr describeDynamoDBTable(String tableName) throws ExecutionException, InterruptedException {
 
         DescribeTableRequest request = DescribeTableRequest.builder()
                 .tableName(tableName)
                 .build();
         TableDescr tableDescr = new TableDescr();
 
-        TableDescription tableInfo = dynamoDbClient.describeTable(request).table();
+        TableDescription tableInfo = dynamoDbClient.describeTable(request).get().table();
         if (tableInfo != null) {
             System.out.format("Table name  : %s\n", tableInfo.tableName());
             System.out.format("Table ARN   : %s\n", tableInfo.tableArn());

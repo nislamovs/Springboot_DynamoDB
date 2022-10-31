@@ -3,8 +3,14 @@ server:
 
 application.support.email: "nizami.islamovs@gmail.com"
 
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
 amazon:
   aws:
     accesskey: DUMMYIDEXAMPLE
     region: us-west-2
     secretkey: DUMMYEXAMPLEKEY
+  dynamodb:
+    endpoint: 'http://dynamodb-test:8000/'

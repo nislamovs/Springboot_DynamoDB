@@ -73,7 +73,7 @@ public class CustomerService {
                 .switchIfEmpty(error(() -> withMessage(format("Customer by id [%s] was not found.", id))));
     }
 
-    public Mono<Long> getCustomersCount() {
+    public Mono<Long> getCustomersCount() throws ExecutionException, InterruptedException {
         return Mono.just(customerRepository.countDbItems());
     }
 

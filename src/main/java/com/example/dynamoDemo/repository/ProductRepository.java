@@ -6,16 +6,16 @@ import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.core.async.SdkPublisher;
 import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.enhanced.dynamodb.model.*;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableRequest;
 import software.amazon.awssdk.services.dynamodb.model.TableDescription;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 
@@ -25,7 +25,7 @@ public class ProductRepository {
 
     private DynamoDbAsyncTable<Product> productTable;
     private final DynamoDbEnhancedAsyncClient enhancedAsyncClient;
-    private final DynamoDbClient dynamoDbClient;
+    private final DynamoDbAsyncClient dynamoDbClient;
 
     @PostConstruct
     void init() {
@@ -88,12 +88,12 @@ public class ProductRepository {
 
 //Count
 
-    public long countDbItems(){
+    public long countDbItems() throws ExecutionException, InterruptedException {
         DescribeTableRequest request = DescribeTableRequest.builder()
                 .tableName(productTable.tableName())
                 .build();
 
-        TableDescription tableInfo = dynamoDbClient.describeTable(request).table();
+        TableDescription tableInfo = dynamoDbClient.describeTable(request).get().table();
         return tableInfo.itemCount();
     }
 

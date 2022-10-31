@@ -58,7 +58,7 @@ public class ProductService {
                 });
     }
 
-    public Mono<Long> getProductsCount() {
+    public Mono<Long> getProductsCount() throws ExecutionException, InterruptedException {
         return Mono.just(productRepository.countDbItems());
     }
 

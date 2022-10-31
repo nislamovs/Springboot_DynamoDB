@@ -103,7 +103,7 @@ public interface iProductController {
           description = "Product was not found",
           content = @Content)
   })
-  Mono<?> getProductCount();
+  Mono<?> getProductCount() throws ExecutionException, InterruptedException;
 
   @Operation(summary = "Delete product by id")
   @ApiResponses(value = {

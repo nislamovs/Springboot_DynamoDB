@@ -48,7 +48,7 @@ public class CustomerController implements iCustomerController {
 
     @Override
     @GetMapping("/customer/count")
-    public Mono<?> getCustomerCount() {
+    public Mono<?> getCustomerCount() throws ExecutionException, InterruptedException {
         return Mono.just(customerService.getCustomersCount());
     }
 

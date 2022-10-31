@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import reactor.core.publisher.Flux;
 
+import java.util.concurrent.ExecutionException;
+
 public interface iTableDescriptionController {
 
     @Operation(summary = "Get table descriptions")
@@ -30,5 +32,5 @@ public interface iTableDescriptionController {
                     description = "Tables were not found",
                     content = @Content)
     })
-    Flux<?> getTableInfo();
+    Flux<?> getTableInfo() throws ExecutionException, InterruptedException;
 }

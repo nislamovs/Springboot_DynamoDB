@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.concurrent.ExecutionException;
+
 
 @Slf4j
 @RestController
@@ -20,7 +22,7 @@ public class TableDescriptionController implements iTableDescriptionController {
 
     @Override
     @GetMapping("/table/info")
-    public Flux<?> getTableInfo() {
+    public Flux<?> getTableInfo() throws ExecutionException, InterruptedException {
         log.info("Getting all tables with descriptions");
         return Flux.just(service.getTableInfo());
     }

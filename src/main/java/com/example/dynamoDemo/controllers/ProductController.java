@@ -55,7 +55,7 @@ public class ProductController implements iProductController {
 
     @Override
     @GetMapping("/product/count")
-    public Mono<?> getProductCount() {
+    public Mono<?> getProductCount() throws ExecutionException, InterruptedException {
         return Mono.just(productService.getProductsCount());
     }
 

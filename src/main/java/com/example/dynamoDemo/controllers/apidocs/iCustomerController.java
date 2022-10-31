@@ -103,7 +103,7 @@ public interface iCustomerController {
           description = "Customer was not found",
           content = @Content)
   })
-  Mono<?> getCustomerCount();
+  Mono<?> getCustomerCount() throws ExecutionException, InterruptedException;
 
   @Operation(summary = "Delete customer by id")
   @ApiResponses(value = {
