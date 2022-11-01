@@ -109,7 +109,7 @@ public class CustomerService {
                         throwable -> log.error("DynamoDB save failed", throwable.getCause())));
     }
 
-    public void generateNewCustomers(Integer count) {
+    public List<Customer> generateNewCustomers(Integer count) {
         List<CustomerDto> customers = new ArrayList<>();
         for (int n = 0; n < count; n++) {
             customers.add(Utils.generateCustomer());
@@ -119,5 +119,6 @@ public class CustomerService {
                 .map(customerMapper::toDAO).collect(Collectors.toList());
 
         customerRepository.batchWrite(customersDaos).join();
+        return customersDaos;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.dynamoDemo;
 
 import com.example.dynamoDemo.configuration.DynamoDbTestConfiguration;
+import com.example.dynamoDemo.models.Customer;
 import com.example.dynamoDemo.models.Product;
 import com.example.dynamoDemo.repository.CustomerRepository;
 import com.example.dynamoDemo.repository.ProductRepository;
@@ -14,9 +15,16 @@ import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.FixedHostPortGenericContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -44,20 +52,12 @@ public class DynamoTestContainerTest {
     @Autowired
     private DynamoDbAsyncClient asyncClient;
 
-//    @Autowired
-//    private static FixedHostPortGenericContainer dynamodb;
-
     @BeforeAll
     public void createTables() {
         System.out.println();
         System.out.println("Initializing... ");
         createCustomersTableAsync(asyncClient).join();
-//                .whenComplete(CompletableFutureUtils.doOnError(
-//                        throwable -> log.error("Table creation failed", throwable.getCause())));
-
         createProductCatalogTableAsync(asyncClient).join();
-//                .whenComplete(CompletableFutureUtils.doOnError(
-//                        throwable -> log.error("Table creation failed", throwable.getCause())));
         System.out.print("Done!!!");
         System.out.println();
     }
@@ -84,89 +84,61 @@ public class DynamoTestContainerTest {
         System.out.println(asyncClient.listTables().get().tableNames());
     }
 
-//    @Test
-//    public void testStuff1() throws ExecutionException, InterruptedException {
-//
-//        HashMap<String,AttributeValue> keyToGet = new HashMap<>();
-//        keyToGet.put("Id", AttributeValue.builder()
-//                .s("to6yu35g76y895h76y4")
-//                .build());
-//
-//        GetItemRequest request = GetItemRequest.builder()
-//                .tableName("Customers")
-//                .key(keyToGet)
-//                .consistentRead(true)
-//                .build();
-//
-//        CompletableFuture<GetItemResponse> ss = asyncClient.getItem(request)
-//                .whenComplete(CompletableFutureUtils.doOnError(throwable -> log.error("DynamoDB PUT AsynchronousRequest failed", throwable.getCause())))
-//                .thenApply((GetItemResponse)i -> System.out.println(i));
-//
-//        System.out.println(ss.join());
-//
-////        System.out.println(asyncClient.getItem(request).join().item());
-//    }
-
-
     @Test
-    public void testStuff2() throws ExecutionException, InterruptedException {
-//        System.out.println("1>>  " + asyncClient.listTables().get().tableNames().size());
+    public void testRecordCount() throws ExecutionException, InterruptedException {
+        long count = customerRepository.countDbItems();
         customerService.generateNewCustomers(1);
-//        assertThat(asyncClient.listTables().get().tableNames().size()).isTrue();
-        System.out.println("2>>  " + customerRepository.countDbItems());
-        System.out.println("2>>  " + customerRepository.countDbItems());
-//        System.out.println("3>>  " + asyncClient.listTables().get().tableNames().size());
-//        TimeUnit.SECONDS.sleep(30);
+        assertThat( customerRepository.countDbItems()).isEqualTo(count+1);
+        System.out.println(customerRepository.countDbItems());
+    }
 
-//        TimeUnit.SECONDS.sleep(8);
-//        System.out.println("4>>  " + asyncClient.listTables().get().tableNames().size());
-        asyncClient.deleteTable(DeleteTableRequest.builder()
-                .tableName(CUSTOMERS_TABLENAME)
+    @Test
+    public void testGetCustomer() {
+
+        List<Customer> customers = customerService.generateNewCustomers(1);
+
+        HashMap<String, AttributeValue> keyToGet = new HashMap<>();
+        keyToGet.put("Id", AttributeValue.builder()
+                .s(customers.get(0).getId())
                 .build());
-        createCustomersTableAsync(asyncClient);
-    }
+        keyToGet.put("Email", AttributeValue.builder()
+                .s(customers.get(0).getEmail())
+                .build());
 
-    @Test
-    public void testStuff3() throws ExecutionException, InterruptedException {
-
-        System.out.println(asyncClient.listTables().get().tableNames().size());
-    }
-
-    @Test
-    public void showTables() throws ExecutionException, InterruptedException {
-
-    }
-
-
-
-    @Test
-    public void testItemCount() throws ExecutionException, InterruptedException {
-        assertThat(productRepository.countDbItems()).isGreaterThanOrEqualTo(10);
-    }
-
-    @Test
-    public void testRecordContent() throws ExecutionException, InterruptedException {
-        Product product = productRepository.findById("203").get();
-        assertThat(product.getProductCategory()).isEqualTo("Bicycle");
-    }
-
-    @Test
-    public void testAddRecord() throws ExecutionException, InterruptedException {
-
-        String newId = String.valueOf(new Random().nextInt());
-        Product product = Product.builder()
-                .id(newId)
-                .inPublication(true)
-                .isbn("111-1111155511")
-                .pageCount(123)
-                .price(100)
-                .productCategory("Book")
-                .title("Default test book")
+        GetItemRequest request = GetItemRequest.builder()
+                .tableName("Customers")
+                .key(keyToGet)
+                .consistentRead(true)
                 .build();
 
-        productRepository.save(product);
-        Product testProduct = productRepository.findById(newId).get();
-        assertThat(testProduct.getTitle()).isEqualTo("Default test book");
+        GetItemResponse response = asyncClient.getItem(request).join();
+        System.out.println(response.toString());
+        assertThat(response.item().get("Firstname").s()).isEqualTo(customers.get(0).getFirstname());
     }
+
+//    @Test
+//    public void testRecordContent() throws ExecutionException, InterruptedException {
+//        Product product = productRepository.findById("203").get();
+//        assertThat(product.getProductCategory()).isEqualTo("Bicycle");
+//    }
+//
+//    @Test
+//    public void testAddRecord() throws ExecutionException, InterruptedException {
+//
+//        String newId = String.valueOf(new Random().nextInt());
+//        Product product = Product.builder()
+//                .id(newId)
+//                .inPublication(true)
+//                .isbn("111-1111155511")
+//                .pageCount(123)
+//                .price(100)
+//                .productCategory("Book")
+//                .title("Default test book")
+//                .build();
+//
+//        productRepository.save(product).join();
+//        Product testProduct = productRepository.findById(newId).join();
+//        assertThat(testProduct.getTitle()).isEqualTo("Default test book");
+//    }
 }
 
